@@ -1,14 +1,18 @@
 package service.service;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
+import java.net.Proxy;
 import java.net.URL;
+import java.net.URLStreamHandlerFactory;
 
 
 public class scrapyService implements scrapyImpl{
@@ -21,70 +25,38 @@ public class scrapyService implements scrapyImpl{
 		
 	};
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
 	public  void   getResource() throws IOException{
 		
 	   String directory = "D :\\data"; 
        File  book1=new File(directory);
-       File f = new File(directory); 
-     book1.createTempFile("html1", ".txt");
-     
-     String rLine;
-     
-     
-     Cookie 
-     
-     URLClient
-     
-     
-	    URL url = new URL("http://blog.csdn.net/b_qxzb/article/details/47922193");
-		
+       File file = new File(directory); 
+       book1.createTempFile("html1", ".txt");
+       String rLine;
+        URLStreamHandlerFactory proxy;
+	    URL url = new URL("https://movie.douban.com/subject/26839466/?from=showing");
 	    HttpURLConnection urlcon = (HttpURLConnection)url.openConnection();  
+	    urlcon.setRequestMethod("POST");
+	    urlcon.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.154 Safari/537.36");  
+	    urlcon.setDoOutput(true);  
+	    urlcon.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");  
+	    urlcon.setRequestProperty("Content-Language", "zh-cn");  
+	    urlcon.setRequestProperty("Connection", "keep-alive");  
+	    urlcon.setRequestProperty("Cache-Control", "no-cache");  
 	    
 	    //Simulated landing 
 	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
-	    
 	     // inputStreamReader 封装获取数据
 	    
-	    InputStreamReader inputStreamReader = new InputStreamReader(urlcon.getInputStream(),"utf-8");
+	    OutputStreamWriter OutputStreamWriter = new OutputStreamWriter(urlcon.getOutputStream(),"utf-8");
 	    
 	    //   传递到上层 bufferedReader
-	    BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+	    BufferedWriter bufferedWriter = new BufferedWriter(OutputStreamWriter);
 	
+	    bufferedWriter.write(book1+"\r\n");
 	    
-       if((rLine=bufferedReader.readLine()) != null)
-		
-		  System.out.println(rLine);
+	    
+     
        
-
-    
-
-		  
-		
-		
 	};
 	
 
@@ -109,20 +81,6 @@ public class scrapyService implements scrapyImpl{
 		}
 	}
       
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 //
