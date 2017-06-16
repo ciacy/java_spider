@@ -2,7 +2,7 @@ package service.service;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,14 +27,14 @@ public class scrapyService implements scrapyImpl{
 
 	public  void   getResource() throws IOException{
 		
-	   String directory = "D :\\data"; 
-       File  book1=new File(directory);
-       File file = new File(directory); 
-       book1.createTempFile("html1", ".txt");
-       String rLine;
+	    String html_case1="case1.html";
+	    String directory = "test_file"; 
+        String rLine;
         URLStreamHandlerFactory proxy;
 	    URL url = new URL("https://movie.douban.com/subject/26839466/?from=showing");
+	    FileOutputStream  book1 = new FileOutputStream(directory+"\\"+html_case1);
 	    HttpURLConnection urlcon = (HttpURLConnection)url.openConnection();  
+	    
 	    urlcon.setRequestMethod("POST");
 	    urlcon.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.154 Safari/537.36");  
 	    urlcon.setDoOutput(true);  
@@ -44,20 +44,25 @@ public class scrapyService implements scrapyImpl{
 	    urlcon.setRequestProperty("Cache-Control", "no-cache");  
 	    
 	    //Simulated landing 
-	    
+	    System.out.println(  urlcon.getInputStream().read());
 	     // inputStreamReader 封装获取数据
+	     int read;         
+	     byte[] buffer = new byte[1024];
+	       while ((read = urlcon.getInputStream().read(buffer)) != -1) {// 写入数据
+                  book1.write(buffer, 0, read);
+        }
 	    
-	    OutputStreamWriter OutputStreamWriter = new OutputStreamWriter(urlcon.getOutputStream(),"utf-8");
+         
+	       book1.close();	    
+
 	    
-	    //   传递到上层 bufferedReader
-	    BufferedWriter bufferedWriter = new BufferedWriter(OutputStreamWriter);
 	
-	    bufferedWriter.write(book1+"\r\n");
+	    
 	    
 	    
      
        
-	};
+	}
 	
 
 //  Main test case 
@@ -75,6 +80,7 @@ public class scrapyService implements scrapyImpl{
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				
 			}
 			
 			
@@ -83,36 +89,6 @@ public class scrapyService implements scrapyImpl{
       
 
 
-//
-//  private static void zipWebPage(String url, String savePath) throws IOException {
-//        URLConnection conn = new URL(url).openConnection();// 利用用户输入的网址创建URL连接对象
-//        InputStream in = conn.getInputStream();// 获得输入流
-//        FileOutputStream fos = new FileOutputStream(savePath + "download.zip");
-//        ZipOutputStream zos = new ZipOutputStream(fos);
-//        byte[] buffer = new byte[1024];
-//        ZipEntry entry = new ZipEntry("download.html");// 创建名为“download.html”的压缩条目
-//        zos.putNextEntry(entry);
-//        int read = 0;
-//        while ((read = in.read(buffer)) != -1) {// 写入数据
-//            zos.write(buffer, 0, read);
-//        }
-//        zos.closeEntry();
-//        in.close();// 释放资源
-//        zos.close();
-//        fos.close();
-//    }
 
-
-/*    //方法三
-URL url = new URL("http://www.yhfund.com.cn");
-
-// 方法一 
-URL url = new URL("http://www.sina.com.cn");
-URLConnection urlcon = url.openConnection();
-InputStream is = urlcon.getInputStream();
-InputStream is = url.openStream();
-
-*/
-     
 	
 
